@@ -16,19 +16,28 @@ exports.helloWorld = functions
     const browser = await puppeteer.launch({
       headless: true,
       args: [
-        "--disable-gpu",
-        "--disable-dev-shm-usage",
-        "--disable-setuid-sandbox",
-        "--no-first-run",
+        // "--disable-gpu",
+        // "--disable-dev-shm-usage",
+        // "--disable-setuid-sandbox",
+        // "--no-first-run",
         "--no-sandbox",
-        "--no-zygote",
-        "--single-process",
+        // "--no-zygote",
+        // "--single-process",
+        "--lang=ja,en-US,en",
       ],
     });
     const page = await browser.newPage();
+    // await page.setExtraHTTPHeaders({
+    //   "Accept-Language": "ja-JP",
+    // });
     const iPhone = puppeteer.devices["iPhone X"];
     await page.emulate(iPhone);
     await page.goto(url);
+    await page.addStyleTag({
+      content: `body {font-family: "IPA Pゴシック","IPA PGothic" !important;}`,
+    });
+
+    functions.logger.info(url);
 
     const file = await page.screenshot({
       clip: {
