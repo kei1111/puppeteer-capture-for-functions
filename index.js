@@ -22,18 +22,15 @@ exports.helloWorld = functions
         "--no-first-run",
         "--no-sandbox",
         "--no-zygote",
-        "--single-process", // <- this one doesn't works in Windows
+        "--single-process",
       ],
     });
     const page = await browser.newPage();
     const iPhone = puppeteer.devices["iPhone X"];
     await page.emulate(iPhone);
     await page.goto(url);
-    const hashName = Math.random().toString(36).slice(-8);
-    const fileName = hashName + ".png";
-    const screenshotFullPath = "./images/" + fileName;
+
     const file = await page.screenshot({
-      path: screenshotFullPath,
       clip: {
         x: 0,
         y: 0,
@@ -42,6 +39,6 @@ exports.helloWorld = functions
       },
     });
     await browser.close();
-    const uploadFileBuffer = Buffer.from(file);
-    response.send(uploadFileBuffer);
+    const base64Screenshot = file.toString("base64");
+    response.send(base64Screenshot);
   });
