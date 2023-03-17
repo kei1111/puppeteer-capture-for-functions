@@ -32,9 +32,11 @@ exports.helloWorld = functions
     // });
     const iPhone = puppeteer.devices["iPhone X"];
     await page.emulate(iPhone);
-    await page.setDefaultNavigationTimeout(30000);
-    await page.goto(url);
-    await page.waitForNavigation({ waitUntil: "load" });
+    // await page.setDefaultNavigationTimeout(30000);
+    await Promise.all([
+      page.waitForNavigation({ waitUntil: "networkidle0" }),
+      page.goto(url),
+    ]);
     await page.addStyleTag({
       content: `body {font-family: "IPA Pゴシック","IPA PGothic" !important;}`,
     });
