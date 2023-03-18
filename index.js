@@ -31,10 +31,10 @@ exports.helloWorld = functions
     //   "Accept-Language": "ja-JP",
     // });
     const iPhone = puppeteer.devices["iPhone X"];
+    await page.setDefaultNavigationTimeout(60000); //60秒に変更
     await page.emulate(iPhone);
-    // await page.setDefaultNavigationTimeout(30000);
     await Promise.all([
-      page.waitForNavigation({ waitUntil: "networkidle0" }),
+      page.waitForNavigation({ waitUntil: "networkidle0", timeout: 60000 }),
       page.goto(url),
     ]);
     await page.addStyleTag({
